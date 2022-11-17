@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
@@ -22,12 +22,16 @@ data = [
 
 @app.route('/')
 def hello():
-    return "Hello Flask-Heroku"
+    return "Hello Chat"
 
 
 @app.route('/api', methods=['GET'])
 def get_api():
     return jsonify(data)
+
+@app.route('/form')
+def input_form():
+    return render_template('input_form.html')
 
 if __name__ == "__main__":
     app.run(debug=False)

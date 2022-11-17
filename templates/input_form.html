@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<body>
+    <div style="margin: 20px;">
+        <div id="chat-div" class="card overflow-auto" style="height: 500px; padding-top: 20px;">
+            <ul>
+                <p id="list"></p>
+            </ul>
+        </div>
+
+
+        <p> OutPut: {{output}} </p>
+
+        <form method="POST">
+            <input name="text" class="form-control" placeholder="ป้อนข้อความ">
+            <input id="submit" type="submit" class="btn btn-success">
+        </form>
+    </div>
+
+
+    <script>
+        // init and load local storage
+        let message = "{{message}}";
+        let message_list = JSON.parse(sessionStorage.getItem("message_list"));
+
+        if (message_list == null) {
+            message_list = [];
+        }
+
+        else if (message_list.length >= 0 && message.length != 0) {
+            console.log("insert {{message}}");
+            message_list.push(message);
+            message = "";
+        }
+
+        let list = "", i;
+
+        for (i = 0; i < message_list.length; i++) {
+            list = list + '<div class="card" style="margin-bottom: 10px;"><div class="card-body">' + message_list[i] + "</div></div>"
+        }
+
+        sessionStorage.setItem("message_list", JSON.stringify(message_list));
+
+        document.getElementById("list").innerHTML = list;
+
+        //auto scroll
+        var element = document.getElementById("chat-div");
+        element.scrollTop = element.scrollHeight;
+
+    </script>
+
+</body>
+
+</html>
