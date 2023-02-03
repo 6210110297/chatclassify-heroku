@@ -4,7 +4,11 @@ from models.message_classifier import MessageClassifier
 app = Flask(__name__)
 classifier = MessageClassifier()
 
-classifier.load_model(model_path='./models/rf_model.joblib', json_classes_path='./models/classes.json')
+classifier.load_model(
+    model_path='./models/mlp_model.joblib', 
+    json_classes_path='./models/classes.json', 
+    scaler_path='./models/scaler.joblib'
+)
 
 # global text cache 
 # !!! dont use when already have DB
@@ -18,17 +22,13 @@ category_map = {
     'C': 'Common'
 }
 
-@app.route('/')
-def hello():
-    return "Hello Chat"
-
-@app.route('/form', methods=['GET'])
+@app.route('/', methods=['GET'])
 def input_form():
     global text_cache
     text_cache = ""
     return render_template('input_form.html')
 
-@app.route('/form', methods=['POST'])
+@app.route('/', methods=['POST'])
 def my_form_post():
     global text_cache
     text = request.form['text']
@@ -38,6 +38,7 @@ def my_form_post():
     text_cache= text
 
     # more readable output
+
     output = classifier.classify(text_input= text)
     output = [category_map[output[0][-1]], round(output[1], 3)]
 
