@@ -7,11 +7,9 @@ classifier = MessageClassifier()
 classifier.load_model(
     model_path='./models/mlp_model.joblib', 
     json_classes_path='./models/classes.json', 
-    scaler_path='./models/scaler.joblib'
 )
 
 # global text cache 
-# !!! dont use when already have DB
 text_cache = ""
 
 category_map = {
