@@ -28,7 +28,7 @@
         </div>
 
 
-        <p> OutPut: {{output}} </p>
+        <!-- <p> OutPut: {{message}} | {{output}} </p> -->
 
         <form method="POST">
             <input name="text" class="form-control" placeholder="ป้อนข้อความ">
@@ -40,27 +40,35 @@
     <script>
         // init and load local storage
         let message = "{{message}}";
+        let result = "{{output}}";
+        let card_color = "{{card_color}}"
+
         let message_list = JSON.parse(sessionStorage.getItem("message_list"));
+        let result_list = JSON.parse(sessionStorage.getItem("result_list"));
+        let color_list = JSON.parse(sessionStorage.getItem("color_list"));
 
-        if (message_list == null) {
+        if (message_list == null || result_list == null || color_list == null) {
             message_list = [];
+            result_list = [];
+            color_list = [];
         }
-
         else if (message_list.length >= 0 && message.length != 0) {
-
-            console.log("insert {{message}}");
-
             message_list.push(message);
+            result_list.push(result);
+            color_list.push(card_color);
+
             message = "";
         }
 
         let list = "", i;
 
         for (i = 0; i < message_list.length; i++) {
-            list = list + '<div class="card" style="margin-bottom: 10px; display: inline-block;"><div class="card-body">' + message_list[i] + "</div></div><br>"
+            list = list + '<div class="card" style="margin-bottom: 10px; display: inline-block;"><div class="card-body">' + message_list[i] + '</div><div style="padding: 5px; background-color:'+ color_list[i] + '">'+ result_list[i] +"</div></div><br>";
         }
 
         sessionStorage.setItem("message_list", JSON.stringify(message_list));
+        sessionStorage.setItem("result_list", JSON.stringify(result_list));
+        sessionStorage.setItem("color_list", JSON.stringify(color_list));
 
         document.getElementById("list").innerHTML = list;
 
